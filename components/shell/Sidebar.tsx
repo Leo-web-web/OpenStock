@@ -52,6 +52,10 @@ const Sidebar = ({ user, watchlist }: SidebarProps) => {
                     <Star /> <span className="flex-1">Watchlist</span>
                     <span className="num text-xs text-faint">{watchlist.length}</span>
                 </Link>
+
+                <Link href="/brief" className={cn('side-item', pathname === '/brief' && 'is-active')}>
+                    <BookOpen /> 每日简报
+                </Link>
             </nav>
 
             <div className="flex min-h-0 flex-col gap-1">
