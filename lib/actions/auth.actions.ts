@@ -17,7 +17,7 @@ export const signUpWithEmail = async ({ email, password, fullName, country, inve
         || !isOption(INVESTMENT_GOALS, investmentGoals)
         || !isOption(RISK_TOLERANCE_OPTIONS, riskTolerance)
         || !isOption(PREFERRED_INDUSTRIES, preferredIndustry)) {
-        return { success: false, error: 'Sign up failed' };
+        return { success: false, error: '注册失败' };
     }
     // Each sign-up sends a welcome email from our Gmail and an AI call
     if (await isRateLimited(`sign-up:ip:${await clientIp()}`, 5, 60 * 60)) {
@@ -43,7 +43,7 @@ export const signUpWithEmail = async ({ email, password, fullName, country, inve
         return { success: true, data: response }
     } catch (e) {
         console.log('Sign up failed', e)
-        return { success: false, error: 'Sign up failed' }
+        return { success: false, error: '注册失败' }
     }
 }
 
@@ -77,7 +77,7 @@ export const signInWithEmail = async ({ email, password }: SignInFormData) => {
         return { success: true, data: response }
     } catch (e) {
         console.log('Sign in failed', e)
-        return { success: false, error: 'Sign in failed' }
+        return { success: false, error: '登录失败' }
     }
 }
 
@@ -89,13 +89,13 @@ export const signInWithSocial = async (provider: 'google' | 'github') => {
         return { success: true, url }
     } catch (e) {
         console.log('Social sign in failed', e)
-        return { success: false, error: `${provider === 'google' ? 'Google' : 'GitHub'} sign in is not available right now.` }
+        return { success: false, error: `${provider === 'google' ? 'Google' : 'GitHub'} 登录目前不可用。` }
     }
 }
 
 export const requestPasswordResetEmail =async ({ email }: { email: string }) => {
     if (!process.env.NODEMAILER_EMAIL || !process.env.NODEMAILER_PASSWORD) {
-        return { success: false, error: 'Password reset email is not configured.' }
+        return { success: false, error: '密码重置邮件尚未配置。' }
     }
     // Every request sends a real email from our Gmail; unlimited requests could exhaust its daily quota
     if (await isRateLimited(`reset:email:${String(email).trim().toLowerCase()}`, 3, 60 * 60)
@@ -112,7 +112,7 @@ export const requestPasswordResetEmail =async ({ email }: { email: string }) => 
         if (!baseUrl) {
             return {
                 success: false,
-                error: 'BETTER_AUTH_URL must be configured before password reset emails can be sent.',
+                error: '发送密码重置邮件前，必须先配置 BETTER_AUTH_URL。',
             }
         }
 
@@ -126,7 +126,7 @@ export const requestPasswordResetEmail =async ({ email }: { email: string }) => 
         return { success: true }
     } catch (e) {
         console.log('Password reset request failed', e)
-        return { success: false, error: 'Unable to send password reset email.' }
+        return { success: false, error: '无法发送密码重置邮件。' }
     }
 }
 
@@ -144,7 +144,7 @@ export const resetPasswordWithToken = async (
         return { success: true }
     } catch (e) {
         console.log('Password reset failed', e)
-        return { success: false, error: 'Reset link is invalid or expired.' }
+        return { success: false, error: '重置链接无效或已过期。' }
     }
 }
 
@@ -153,7 +153,7 @@ export const signOut = async () => {
         await auth.api.signOut({ headers: await headers() });
     } catch (e) {
         console.log('Sign out failed', e)
-        return { success: false, error: 'Sign out failed' }
+        return { success: false, error: '退出登录失败' }
     }
 }
 

@@ -18,25 +18,25 @@ export const SOURCE_CONFIG = {
     reddit: {
         label: 'Reddit',
         path: '/reddit/stocks/v1/compare',
-        metricLabel: 'Mentions',
+        metricLabel: '提及次数',
         metricField: 'mentions',
     },
     x: {
         label: 'X.com',
         path: '/x/stocks/v1/compare',
-        metricLabel: 'Mentions',
+        metricLabel: '提及次数',
         metricField: 'mentions',
     },
     news: {
-        label: 'News',
+        label: '新闻',
         path: '/news/stocks/v1/compare',
-        metricLabel: 'Mentions',
+        metricLabel: '提及次数',
         metricField: 'mentions',
     },
     polymarket: {
         label: 'Polymarket',
         path: '/polymarket/stocks/v1/compare',
-        metricLabel: 'Trades',
+        metricLabel: '交易次数',
         metricField: 'trade_count',
     },
 } as const satisfies Record<
@@ -95,19 +95,19 @@ function normalizeTrend(value: unknown): SentimentTrend | null {
 }
 
 export function getSourceAlignment(bullishValues: number[]): string {
-    if (bullishValues.length === 0) return 'No sentiment mix';
-    if (bullishValues.length === 1) return 'Single-source view';
+    if (bullishValues.length === 0) return '暂无情绪分布';
+    if (bullishValues.length === 1) return '单一来源';
 
     const min = Math.min(...bullishValues);
     const max = Math.max(...bullishValues);
     const spread = max - min;
     const avg = average(bullishValues);
 
-    if (spread <= 12 && avg >= 60) return 'Bullish alignment';
-    if (spread <= 12 && avg <= 40) return 'Bearish alignment';
-    if (spread <= 12) return 'Tight alignment';
-    if (spread >= 25) return 'Wide divergence';
-    return 'Mixed';
+    if (spread <= 12 && avg >= 60) return '看涨一致';
+    if (spread <= 12 && avg <= 40) return '看跌一致';
+    if (spread <= 12) return '高度一致';
+    if (spread >= 25) return '分歧较大';
+    return '观点不一';
 }
 
 export function normalizeSourceInsight(

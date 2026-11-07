@@ -16,35 +16,35 @@ export const sendPasswordResetEmail = async (
             throw new Error('Email credentials not configured');
         }
 
-        const firstName = name?.trim().split(' ')[0] || 'there';
+        const firstName = name?.trim().split(' ')[0] || '你';
         const escapedFirstName = escapeHtml(firstName);
         const escapedResetUrl = escapeHtml(encodeUnsafeUrlChars(resetUrl));
         const html = `
             <div style="background:#000;padding:32px;font-family:Arial,sans-serif;color:#fff;">
                 <div style="max-width:560px;margin:0 auto;border:1px solid #333;border-radius:12px;padding:32px;background:#111;">
-                    <h1 style="margin:0 0 16px;font-size:28px;">Reset your password</h1>
-                    <p style="margin:0 0 16px;color:#d4d4d8;">Hi ${escapedFirstName},</p>
+                    <h1 style="margin:0 0 16px;font-size:28px;">重置密码</h1>
+                    <p style="margin:0 0 16px;color:#d4d4d8;">你好 ${escapedFirstName}，</p>
                     <p style="margin:0 0 24px;color:#d4d4d8;line-height:1.6;">
-                        We received a request to reset your Openstock password. Use the button below to choose a new one.
+                        我们收到了重置你的 OpenStock 密码的请求。请点击下方按钮设置新密码。
                     </p>
                     <a
                         href="${escapedResetUrl}"
                         style="display:inline-block;background:#facc15;color:#111827;padding:12px 20px;border-radius:9999px;text-decoration:none;font-weight:700;"
                     >
-                        Reset password
+                        重置密码
                     </a>
                     <p style="margin:24px 0 0;color:#a1a1aa;line-height:1.6;">
-                        If you did not request this, you can safely ignore this email.
+                        如果你没有提出此请求，可以放心忽略这封邮件。
                     </p>
                 </div>
             </div>
         `;
 
         const info = await transporter.sendMail({
-            from: `"Openstock" <${process.env.NODEMAILER_EMAIL}>`,
+            from: `"OpenStock" <${process.env.NODEMAILER_EMAIL}>`,
             to: email,
-            subject: 'Reset your Openstock password',
-            text: `Reset your password: ${encodeUnsafeUrlChars(resetUrl)}`,
+            subject: '重置你的 OpenStock 密码',
+            text: `重置密码：${encodeUnsafeUrlChars(resetUrl)}`,
             html,
         });
 

@@ -41,23 +41,23 @@ export function indexLabel(id: IndexId): string {
 }
 
 function exchangePhrase(exchange: string): string {
-    if (!exchange) return 'listed in the United States';
-    if (exchange === 'NYSE' || exchange.startsWith('NYSE ')) return `listed on the ${exchange}`;
-    return `listed on ${exchange}`;
+    if (!exchange) return '在美国上市';
+    if (exchange === 'NYSE' || exchange.startsWith('NYSE ')) return `在 ${exchange} 上市`;
+    return `在 ${exchange} 上市`;
 }
 
 export function tickerIntro(ticker: UsTicker): string {
-    const place = [exchangePhrase(ticker.exchange), ticker.sector ? `in the ${ticker.sector} sector` : '']
+    const place = [exchangePhrase(ticker.exchange), ticker.sector ? `属于 ${ticker.sector} 板块` : '']
         .filter(Boolean)
         .join(', ');
     const sub = ticker.subIndustry ? ` (${ticker.subIndustry})` : '';
-    const names = ticker.indexes.map((id) => `the ${indexLabel(id)}`);
+    const names = ticker.indexes.map((id) => indexLabel(id));
     const membership = names.length === 0
         ? ''
         : names.length === 1
-            ? ` It is in ${names[0]}.`
-            : ` It is in ${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}.`;
-    return `${ticker.name} (${ticker.symbol}) is ${place}${sub}.${membership} This page shows a TradingView chart for ${ticker.symbol} and the company's recent annual and quarterly reports from the SEC EDGAR database. It does not include a price quote.`;
+            ? `它属于${names[0]}。`
+            : `它属于${names.slice(0, -1).join('、')}和${names[names.length - 1]}。`;
+    return `${ticker.name}（${ticker.symbol}）${place}${sub}。${membership}本页面展示 ${ticker.symbol} 的 TradingView 图表，以及该公司在 SEC EDGAR 数据库中的近期年报与季报，不包含价格行情。`;
 }
 
 export function relatedTickers(ticker: UsTicker, limit = 8): UsTicker[] {

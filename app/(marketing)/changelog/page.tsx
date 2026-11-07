@@ -6,8 +6,8 @@ import { MAINTAINER, RELEASES, type Credit } from "@/lib/changelog";
 import { cn } from "@/lib/utils";
 
 export const metadata = {
-    title: 'Changelog',
-    description: 'Everything that changed in OpenStock, release by release, since it started in September 2025.',
+    title: '更新日志',
+    description: 'OpenStock 自 2025 年 9 月创立以来每次发布的全部变更。',
 };
 
 // "#123" in an item becomes a link to that pull request
@@ -29,7 +29,7 @@ const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 const creditLabel = ({ prs = [], issues = [] }: Credit) =>
     [prs.length ? plural(prs.length, 'PR') : '', issues.length ? plural(issues.length, 'issue') : ''].filter(Boolean).join(' · ');
 const creditTitle = ({ prs = [], issues = [] }: Credit) =>
-    [prs.length ? `Pull requests ${prs.map((n) => `#${n}`).join(' ')}` : '', issues.length ? `Issues ${issues.map((n) => `#${n}`).join(' ')}` : ''].filter(Boolean).join(' · ');
+    [prs.length ? `拉取请求 ${prs.map((n) => `#${n}`).join(' ')}` : '', issues.length ? `议题 ${issues.map((n) => `#${n}`).join(' ')}` : ''].filter(Boolean).join(' · ');
 
 const Avatar = ({ login, size }: { login: string; size: number }) => (
     <img src={`https://github.com/${login}.png?size=${size * 2}`} alt="" width={size} height={size} loading="lazy" className="flex-none rounded-full bg-page" />
@@ -54,11 +54,11 @@ export default function ChangelogPage() {
         <>
             <PageHero
                 kicker="Changelog"
-                title="Everything that changed in OpenStock."
-                sub="Every release since we started in September 2025, in plain words. Each change links to its pull request on GitHub."
+                title="OpenStock 的全部变更。"
+                sub="自 2025 年 9 月创立以来的每个版本，用通俗的语言说明。每项变更都链接到其在 GitHub 上的拉取请求。"
             >
-                <Link href="/dashboard" className="btn btn-primary h-11 px-5 text-[15px]">Open dashboard</Link>
-                <a href="#contributors" className="btn btn-ghost h-11 px-5 text-[15px]">Meet the {CONTRIBUTORS.length} contributors</a>
+                <Link href="/dashboard" className="btn btn-primary h-11 px-5 text-[15px]">打开仪表盘</Link>
+                <a href="#contributors" className="btn btn-ghost h-11 px-5 text-[15px]">认识这 {CONTRIBUTORS.length} 位贡献者</a>
             </PageHero>
 
             <ol className="mx-auto mt-16 max-w-[1200px] px-5">
@@ -69,7 +69,7 @@ export default function ChangelogPage() {
                         <li key={release.id} className="grid gap-3 md:grid-cols-[150px_minmax(0,1fr)] md:gap-8">
                             <div className="md:sticky md:top-24 md:self-start md:pt-0.5 md:text-right">
                                 <p className="kicker text-foreground">{release.date}</p>
-                                {latest && <span className="pill is-brand mt-2">Latest</span>}
+                                {latest && <span className="pill is-brand mt-2">最新</span>}
                             </div>
 
                             {/* The timeline: a line down the left of each release, with a dot at its title */}
@@ -101,7 +101,7 @@ export default function ChangelogPage() {
                                 </div>
 
                                 <div className="mt-4 flex flex-wrap items-center gap-2">
-                                    <span className="kicker mr-1">Thanks to</span>
+                                    <span className="kicker mr-1">感谢</span>
                                     {release.credits.map((credit) => (
                                         <a
                                             key={credit.login}
@@ -125,9 +125,9 @@ export default function ChangelogPage() {
 
             <section id="contributors" className="mx-auto mt-24 max-w-[1200px] scroll-mt-24 px-5">
                 <SectionHead
-                    kicker="Contributors"
-                    title={`Built by ${CONTRIBUTORS.length} people.`}
-                    sub="Everyone whose pull request or issue shaped a release above. Thank you: this is your work."
+                    kicker="贡献者"
+                    title={`由 ${CONTRIBUTORS.length} 人共建。`}
+                    sub="每一位通过拉取请求或议题影响了上述版本的人。谢谢你们：这是你们的成果。"
                 />
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {CONTRIBUTORS.map((person) => (
@@ -137,7 +137,7 @@ export default function ChangelogPage() {
                                 <div className="min-w-0">
                                     <p className="flex items-center gap-2 font-semibold">
                                         <span className="truncate">{person.login}</span>
-                                        {person.login === MAINTAINER && <span className="pill is-brand shrink-0">Maintainer</span>}
+                                        {person.login === MAINTAINER && <span className="pill is-brand shrink-0">维护者</span>}
                                     </p>
                                     <p className="text-[13px] text-faint">{creditLabel(person)}</p>
                                 </div>
@@ -146,9 +146,9 @@ export default function ChangelogPage() {
                     ))}
                 </div>
                 <p className="mt-6 text-[14px] text-faint">
-                    Want to be here? Pick a{' '}
+                    想出现在这里？挑选一个{' '}
                     <a href={GOOD_FIRST_ISSUES_URL} target="_blank" rel="noreferrer" className="font-semibold text-brand-ink hover:underline">good first issue</a>
-                    {' '}or report a bug you hit.
+                    {' '}或报告你遇到的 bug。
                 </p>
             </section>
         </>

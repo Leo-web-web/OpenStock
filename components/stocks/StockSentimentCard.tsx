@@ -36,9 +36,9 @@ export default function StockSentimentCard({ insight }: StockSentimentCardProps)
     }
 
     const summary = [
-        { label: 'Avg. buzz', value: formatScore(insight.averageBuzz, '/100') },
-        { label: 'Bullish avg', value: formatScore(insight.bullishAverage, '%') },
-        { label: 'Coverage', value: `${insight.availableSources}/4 sources` },
+        { label: '平均热度', value: formatScore(insight.averageBuzz, '/100') },
+        { label: '看涨均值', value: formatScore(insight.bullishAverage, '%') },
+        { label: '覆盖', value: `${insight.availableSources}/4 个来源` },
     ];
 
     return (
@@ -52,7 +52,7 @@ export default function StockSentimentCard({ insight }: StockSentimentCardProps)
                 ))}
             </div>
             <p className="border-t border-line px-3 py-2.5 text-[12.5px] text-faint">
-                Source alignment: <span className={cn('font-semibold', getAlignmentClass(insight.sourceAlignment))}>{insight.sourceAlignment}</span>
+                来源一致性： <span className={cn('font-semibold', getAlignmentClass(insight.sourceAlignment))}>{insight.sourceAlignment}</span>
             </p>
 
             <ul className="row-list border-t border-line">
@@ -66,10 +66,10 @@ export default function StockSentimentCard({ insight }: StockSentimentCardProps)
                         </div>
                         <div className="num text-right text-[12.5px]">
                             <p className="font-semibold text-foreground">{formatScore(source.buzzScore, '')}</p>
-                            <p className="text-faint">buzz</p>
+                            <p className="text-faint">热度</p>
                         </div>
                         <span className={cn('pill w-[74px] justify-center capitalize', TREND_CLASS[source.trend ?? ''])}>
-                            {source.bullishPct !== null ? `${source.bullishPct.toFixed(0)}% bull` : (source.trend ?? 'No trend')}
+                            {source.bullishPct !== null ? `${source.bullishPct.toFixed(0)}% 看涨` : (source.trend ?? '无趋势')}
                         </span>
                     </li>
                 ))}

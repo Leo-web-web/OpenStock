@@ -326,7 +326,7 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
         return formatted;
     } catch (err) {
         console.error('getNews error:', err);
-        throw new Error('Failed to fetch news');
+        throw new Error('获取新闻失败');
     }
 }
 

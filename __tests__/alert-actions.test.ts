@@ -34,7 +34,7 @@ describe('alert actions are scoped to the session user', () => {
 
     it('caps active alerts per user, counting only that user’s', async () => {
         countDocuments.mockResolvedValueOnce(50);
-        await expect(createAlert({ symbol: 'AAPL', targetPrice: 200, condition: 'ABOVE' })).rejects.toThrow('up to 50 active alerts');
+        await expect(createAlert({ symbol: 'AAPL', targetPrice: 200, condition: 'ABOVE' })).rejects.toThrow('你最多可以设置 50 条有效提醒');
         expect(countDocuments).toHaveBeenCalledWith({ userId: 'user-123', active: true });
         expect(create).not.toHaveBeenCalled();
     });
@@ -72,7 +72,7 @@ describe('alert actions are scoped to the session user', () => {
     });
 
     it('refuses alerts the checker could never price', async () => {
-        await expect(createAlert({ symbol: 'RELIANCE.NS', targetPrice: 1000, condition: 'ABOVE' })).rejects.toThrow('US stocks and crypto');
+        await expect(createAlert({ symbol: 'RELIANCE.NS', targetPrice: 1000, condition: 'ABOVE' })).rejects.toThrow('提醒仅支持美股和加密货币');
         expect(create).not.toHaveBeenCalled();
     });
 });
@@ -85,12 +85,12 @@ describe('createAlert validates untrusted input', () => {
     });
 
     it('rejects symbols that could carry markup into alert emails', async () => {
-        await expect(createAlert({ symbol: '<img src=x>', targetPrice: 1, condition: 'ABOVE' })).rejects.toThrow('Invalid symbol');
+        await expect(createAlert({ symbol: '<img src=x>', targetPrice: 1, condition: 'ABOVE' })).rejects.toThrow('股票代码无效');
         expect(create).not.toHaveBeenCalled();
     });
 
     it('rejects unknown conditions', async () => {
-        await expect(createAlert({ symbol: 'AAPL', targetPrice: 1, condition: 'SIDEWAYS' as never })).rejects.toThrow('Invalid condition');
+        await expect(createAlert({ symbol: 'AAPL', targetPrice: 1, condition: 'SIDEWAYS' as never })).rejects.toThrow('提醒条件无效');
     });
 
     it('stores only validated fields, so callers cannot pre-trigger or extend an alert', async () => {

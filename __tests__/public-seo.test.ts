@@ -77,7 +77,7 @@ describe('tickers', () => {
         expect(intro).toContain('S&P 500');
         expect(intro).toContain('Nasdaq-100');
         expect(intro.toLowerCase()).not.toContain('finnhub');
-        expect(intro).toContain('does not include a price quote');
+        expect(intro).toContain('不包含价格行情');
     });
 
     it('links peers in the same sector and the neighbouring symbols', () => {
@@ -95,10 +95,10 @@ describe('edgar helpers', () => {
     it('builds an archives URL and formats filing facts', () => {
         expect(filingUrl('320193', '0000320193-25-000079', 'aapl-20250927.htm'))
             .toBe('https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm');
-        expect(formatFiscalYearEnd('0926')).toBe('September 26');
+        expect(formatFiscalYearEnd('0926')).toBe('九月 26');
         expect(formatFiscalYearEnd('nope')).toBeNull();
-        expect(formatFilingDate('2025-10-31')).toBe('October 31, 2025');
-        expect(stateName('DE')).toBe('Delaware');
+        expect(formatFilingDate('2025-10-31')).toBe('2025年10月31日');
+        expect(stateName('DE')).toBe('特拉华州');
     });
 
     it('picks the annual report ahead of a later amendment', () => {
@@ -121,7 +121,7 @@ describe('edgar helpers', () => {
         expect(company.annual?.url).toContain('aapl-20250927.htm');
         expect(company.quarterly?.form).toBe('10-Q');
         expect(company.sicDescription).toBe('Electronic Computers');
-        expect(company.stateOfIncorporation).toBe('California');
+        expect(company.stateOfIncorporation).toBe('加利福尼亚州');
     });
 });
 

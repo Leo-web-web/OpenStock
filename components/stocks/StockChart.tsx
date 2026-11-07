@@ -10,13 +10,13 @@ import { CANDLE_CHART_WIDGET_CONFIG } from "@/lib/constants";
 // The free embed can't save indicators added inside it, so the ones picked here are kept per browser and
 // passed in as `studies` on every chart. Each id was checked on a live advanced-chart embed.
 const INDICATORS = [
-    { id: 'STD;SMA', label: 'Moving average (SMA)' },
-    { id: 'STD;EMA', label: 'Exponential MA (EMA)' },
-    { id: 'STD;Bollinger_Bands', label: 'Bollinger Bands' },
+    { id: 'STD;SMA', label: '移动平均线（SMA）' },
+    { id: 'STD;EMA', label: '指数移动平均线（EMA）' },
+    { id: 'STD;Bollinger_Bands', label: '布林带' },
     { id: 'STD;VWAP', label: 'VWAP' },
     { id: 'STD;RSI', label: 'RSI' },
     { id: 'STD;MACD', label: 'MACD' },
-    { id: 'STD;Stochastic', label: 'Stochastic' },
+    { id: 'STD;Stochastic', label: '随机指标' },
     { id: 'STD;Average_True_Range', label: 'ATR' },
 ];
 const STORAGE_KEY = 'openstock:chart-indicators';
@@ -46,10 +46,10 @@ export default function StockChart({ tvSymbol, scriptUrl }: { tvSymbol: string; 
     const menu = (
         <DropdownMenu>
             <DropdownMenuTrigger className="btn btn-ghost h-8 px-2.5 text-[13px]" disabled={!studies}>
-                <SlidersHorizontal /> Indicators{studies?.length ? <span className="num text-faint">{studies.length}</span> : null}
+                <SlidersHorizontal /> 指标{studies?.length ? <span className="num text-faint">{studies.length}</span> : null}
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className="text-[12px] font-normal text-faint">Kept on every chart in this browser</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-[12px] font-normal text-faint">保存在本浏览器的每张图表上</DropdownMenuLabel>
                 {INDICATORS.map(({ id, label }) => (
                     <DropdownMenuCheckboxItem key={id} checked={studies?.includes(id) ?? false} onCheckedChange={() => toggle(id)} onSelect={(e) => e.preventDefault()}>
                         {label}
@@ -60,7 +60,7 @@ export default function StockChart({ tvSymbol, scriptUrl }: { tvSymbol: string; 
     );
 
     return (
-        <Panel title="Chart" sub="Live from TradingView · switch interval and style in the chart" action={menu}>
+        <Panel title="图表" sub="TradingView 实时数据 · 可在图表内切换周期与样式" action={menu}>
             {studies ? (
                 <TradingViewWidget scriptUrl={scriptUrl} config={{ ...CANDLE_CHART_WIDGET_CONFIG(tvSymbol), studies }} height={CHART_HEIGHT} allowExpand />
             ) : (

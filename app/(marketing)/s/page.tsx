@@ -5,8 +5,8 @@ import JsonLd from '@/components/seo/JsonLd';
 import { siteUrl } from '@/lib/seo/site';
 import { sectorAnchor, tickerPath, tickersBySector, US_TICKERS } from '@/lib/seo/tickers';
 
-const title = 'US stock charts and SEC filings | OpenStock';
-const description = `Public pages for ${US_TICKERS.length} S&P 500 and Nasdaq-100 companies: a TradingView chart and links to recent SEC EDGAR filings. No account required.`;
+const title = '美股图表与 SEC 备案文件 | OpenStock';
+const description = `面向 ${US_TICKERS.length} 家标普 500 与纳斯达克 100 公司的公开页面：TradingView 图表与近期 SEC EDGAR 备案文件链接。无需账号。`;
 
 export function generateMetadata(): Metadata {
     const url = `${siteUrl()}/s`;
@@ -26,15 +26,15 @@ export default function StockDirectoryPage() {
     return (
         <>
             <PageHero
-                kicker="US stocks"
-                title="Charts and filings, no account."
-                sub={`${US_TICKERS.length} companies from the S&P 500 and the Nasdaq-100. Each page is a TradingView chart plus the latest annual and quarterly report on SEC EDGAR. The signed-in app is where watchlists and alerts live.`}
+                kicker="美股"
+                title="图表与备案，无需账号。"
+                sub={`${US_TICKERS.length} 家来自标普 500 与纳斯达克 100 的公司。每页包含一个 TradingView 图表，以及 SEC EDGAR 上最新年报与季报。自选与提醒在登录后的应用中。`}
             >
-                <Link href="/sign-up" className="btn btn-primary h-11 px-5 text-[15px]">Track them free</Link>
-                <Link href="/compare" className="btn btn-ghost h-11 px-5 text-[15px]">Read the guides</Link>
+                <Link href="/sign-up" className="btn btn-primary h-11 px-5 text-[15px]">免费追踪</Link>
+                <Link href="/compare" className="btn btn-ghost h-11 px-5 text-[15px]">阅读指南</Link>
             </PageHero>
 
-            <nav aria-label="Sectors" className="mx-auto mt-10 flex max-w-[1200px] flex-wrap gap-2 px-5">
+            <nav aria-label="板块" className="mx-auto mt-10 flex max-w-[1200px] flex-wrap gap-2 px-5">
                 {groups.map(({ sector, tickers }) => (
                     <a key={sector} href={`#${sectorAnchor(sector)}`} className="pill h-8 px-3 text-[13px]">
                         {sector} <span className="num text-faint">{tickers.length}</span>

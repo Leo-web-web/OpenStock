@@ -8,8 +8,8 @@ import { ACTIVE_SPONSORS, PREVIOUS_SPONSORS, SPONSOR_TIERS, SUPPORTERS, type Spo
 import { cn } from "@/lib/utils";
 
 export const metadata = {
-    title: 'Wall of love',
-    description: 'The sponsors and supporters behind OpenStock, and what people write, post and film about it.',
+    title: '好评墙',
+    description: '支持 OpenStock 的赞助者与支持者，以及人们撰写、发布与拍摄的关于它的内容。',
 };
 
 // Only real posts, videos and articles about OpenStock. X posts render live from X: add the post id, never its text.
@@ -40,15 +40,15 @@ const PRAISE: Praise[] = [
 type WallItem = { name: string; url: string; label: string; logo?: string; iconOnly?: boolean; avatar?: string };
 
 // "Partner", "Company", or "Sponsor" when no tier is recorded
-const tierLabel = (s: Sponsor) => SPONSOR_TIERS.find((t) => t.id === s.tier)?.name ?? 'Sponsor';
+const tierLabel = (s: Sponsor) => SPONSOR_TIERS.find((t) => t.id === s.tier)?.name ?? '赞助者';
 
 const WALL: WallItem[] = [
     ...ACTIVE_SPONSORS.map((s) => ({ name: s.name, url: s.url, logo: s.logo, iconOnly: s.iconOnly, label: tierLabel(s) })),
     ...PREVIOUS_SPONSORS.map((s) => {
-        const label = `Past ${tierLabel(s).toLowerCase()}`;
+        const label = `往期${tierLabel(s).toLowerCase()}`;
         return { name: s.name, url: s.url, logo: s.logo, iconOnly: s.iconOnly, label: s.period ? `${label} · ${s.period}` : label };
     }),
-    ...SUPPORTERS.map((s) => ({ name: s.name, url: `https://github.com/${s.login}`, avatar: `https://github.com/${s.login}.png?size=64`, label: 'Supporter' })),
+    ...SUPPORTERS.map((s) => ({ name: s.name, url: `https://github.com/${s.login}`, avatar: `https://github.com/${s.login}.png?size=64`, label: '支持者' })),
 ];
 
 // Prefilled post for the share button. Keep it within X's 280 characters (the link counts as 23, an emoji as 2).
@@ -90,7 +90,7 @@ const MarqueeRow = ({ items, reverse }: { items: WallItem[]; reverse?: boolean }
                         className="mr-3 flex h-16 shrink-0 items-center rounded-[14px] px-5 text-[13px] font-semibold text-faint transition-colors hover:text-brand-ink"
                         style={{ backgroundImage: 'repeating-linear-gradient(-45deg, oklch(0.4 0.01 95 / 0.22) 0 1px, transparent 1px 5px)', boxShadow: 'inset 0 0 0 1px var(--line)' }}
                     >
-                        Your name here
+                        这里可以是你的名字
                     </Link>
                 </div>
             ))}
@@ -114,7 +114,7 @@ const PraiseCard = ({ praise }: { praise: Praise }) => {
                     </span>
                 </div>
                 <div className="p-5">
-                    <p className="kicker">Video · {praise.channel}</p>
+                    <p className="kicker">视频 · {praise.channel}</p>
                     <p className="mt-2 text-[17px] font-bold leading-snug tracking-[-0.02em]">{praise.title}</p>
                 </div>
             </div>
@@ -123,10 +123,10 @@ const PraiseCard = ({ praise }: { praise: Praise }) => {
     return (
         <a href={praise.url} target="_blank" rel="noreferrer" className="hatch group mb-3 break-inside-avoid">
             <div className="card flex flex-col gap-3 p-5">
-                <p className="kicker">Article · {praise.source}</p>
+                <p className="kicker">文章 · {praise.source}</p>
                 <p className="text-[17px] font-bold leading-snug tracking-[-0.02em]">{praise.title}</p>
                 <span className="flex items-center gap-1 text-[13px] font-semibold text-brand-ink">
-                    Read on {praise.source} <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    在 {praise.source} 上阅读 <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </span>
             </div>
         </a>
@@ -137,26 +137,26 @@ export default function LovePage() {
     return (
         <>
             <PageHero
-                kicker="Wall of love"
-                title="Thank you for keeping OpenStock free."
-                sub="The sponsors who pay the bills, the supporters who chip in, and everyone who writes, posts or films something about it."
+                kicker="好评墙"
+                title="感谢你让 OpenStock 保持免费。"
+                sub="支付账单的赞助者、慷慨解囊的支持者，以及每一位撰写、发布或拍摄相关内容的人。"
             >
-                <Link href="/sponsor" className="btn btn-primary h-11 px-5 text-[15px]">Become a sponsor</Link>
-                <a href={SHARE_URL} target="_blank" rel="noreferrer" className="btn btn-ghost h-11 px-5 text-[15px]">Post about OpenStock</a>
+                <Link href="/sponsor" className="btn btn-primary h-11 px-5 text-[15px]">成为赞助者</Link>
+                <a href={SHARE_URL} target="_blank" rel="noreferrer" className="btn btn-ghost h-11 px-5 text-[15px]">发帖介绍 OpenStock</a>
             </PageHero>
 
-            <section className="mt-16 flex flex-col gap-3" aria-label="Sponsors and supporters">
+            <section className="mt-16 flex flex-col gap-3" aria-label="赞助者与支持者">
                 <MarqueeRow items={WALL} />
                 <MarqueeRow items={[...WALL].reverse()} reverse />
             </section>
 
             <section className="love-wall mx-auto mt-24 max-w-[1200px] px-5">
-                <SectionHead kicker="In their words" title="What people say about OpenStock." sub="Posts, videos and write-ups from people who found it, used it and told others." />
+                <SectionHead kicker="他们的话" title="大家对 OpenStock 的评价。" sub="来自发现它、使用它并告诉他人的人们的帖子、视频与文章。" />
                 <div className="columns-1 gap-3 md:columns-2 lg:columns-3">
                     {PRAISE.map((praise) => <PraiseCard key={praise.kind === 'post' ? praise.id : praise.url} praise={praise} />)}
                 </div>
                 <p className="mt-6 text-[14px] text-faint">
-                    Made something about OpenStock? <a href={EDIT_URL} target="_blank" rel="noreferrer" className="font-semibold text-brand-ink hover:underline">Add it to this page</a>.
+                    做了关于 OpenStock 的内容？<a href={EDIT_URL} target="_blank" rel="noreferrer" className="font-semibold text-brand-ink hover:underline">把它加到本页</a>.
                 </p>
             </section>
         </>

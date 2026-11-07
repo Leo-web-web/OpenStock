@@ -9,10 +9,10 @@ import { getUserWatchlist } from "@/lib/actions/watchlist.actions";
 import { getUserAlerts } from "@/lib/actions/alert.actions";
 import { alertsEnabled } from "@/lib/market-data";
 
-export const metadata = { title: 'Profile | OpenStock' };
+export const metadata = { title: '个人资料 | OpenStock' };
 
 const METHOD_LABELS: Record<string, string> = {
-    credential: 'Email and password',
+    credential: '邮箱与密码',
     google: 'Google',
     github: 'GitHub',
 };
@@ -29,12 +29,12 @@ export default async function ProfilePage() {
     ]);
     const linked = new Set(accounts.map((a: { providerId: string }) => a.providerId));
     const activeAlerts = alerts.filter((a: { triggered?: boolean }) => !a.triggered).length;
-    const memberSince = new Date(user.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const memberSince = new Date(user.createdAt).toLocaleDateString('zh-CN', { month: 'long', year: 'numeric' });
 
     const stats = [
-        { label: 'Watching', value: watchlist.length, icon: Star },
-        { label: alertsEnabled ? 'Active alerts' : 'Paused alerts', value: activeAlerts, icon: Bell },
-        { label: 'Sign-in methods', value: linked.size, icon: ShieldCheck },
+        { label: '正在关注', value: watchlist.length, icon: Star },
+        { label: alertsEnabled ? '生效中的提醒' : '已暂停的提醒', value: activeAlerts, icon: Bell },
+        { label: '登录方式', value: linked.size, icon: ShieldCheck },
     ];
 
     return (
@@ -46,7 +46,7 @@ export default async function ProfilePage() {
                     </span>
                     <div className="min-w-0 flex-1">
                         <h1 className="truncate text-[22px] font-bold tracking-[-0.03em]">{user.name}</h1>
-                        <p className="truncate text-faint">{user.email} · member since {memberSince}</p>
+                        <p className="truncate text-faint">{user.email} · 加入于 {memberSince}</p>
                     </div>
                 </div>
                 <div className="bento mt-[3px]">
@@ -60,7 +60,7 @@ export default async function ProfilePage() {
             </section>
 
             <div className="grid items-start gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,420px)]">
-                <Panel title="Details" sub="Your name and what your welcome email is tailored to">
+                <Panel title="资料详情" sub="你的姓名，以及欢迎邮件的定制依据">
                     <ProfileForm
                         initial={{
                             name: user.name,
@@ -73,20 +73,20 @@ export default async function ProfilePage() {
                 </Panel>
 
                 <div className="flex min-w-0 flex-col gap-3">
-                    <Panel title="Sign-in methods" sub="Ways you can get into this account">
+                    <Panel title="登录方式" sub="可用于登录此账号的方式">
                         <ul className="row-list">
                             {[...linked].map((id) => (
                                 <li key={id} className="flex items-center gap-3 px-3.5 py-3">
                                     <span className="bento-ico"><KeyRound /></span>
                                     <span className="flex-1 font-semibold">{METHOD_LABELS[id] ?? id}</span>
-                                    <span className="pill is-up">Connected</span>
+                                    <span className="pill is-up">已关联</span>
                                 </li>
                             ))}
                         </ul>
                     </Panel>
 
                     {linked.has('credential') && (
-                        <Panel title="Password" sub="Changing it signs out your other devices">
+                        <Panel title="密码" sub="修改后将退出你在其他设备上的登录">
                             <PasswordForm />
                         </Panel>
                     )}

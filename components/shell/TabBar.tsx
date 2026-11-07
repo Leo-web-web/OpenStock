@@ -12,9 +12,9 @@ const STORAGE_KEY = 'openstock-tabs';
 const MAX_TABS = 12;
 
 const PAGE_LABELS: Record<string, string> = {
-    '/dashboard': 'Overview',
-    '/watchlist': 'Watchlist',
-    '/profile': 'Profile',
+    '/dashboard': '概览',
+    '/watchlist': '自选',
+    '/profile': '个人资料',
 };
 
 // Pages become browser-style tabs; stock pages are labelled by their symbol.
@@ -70,7 +70,7 @@ const TabBar = ({ onMenu }: { onMenu: () => void }) => {
 
     return (
         <div className="tabbar">
-            <button type="button" onClick={onMenu} className="chrome-btn lg:hidden" aria-label="Open menu">
+            <button type="button" onClick={onMenu} className="chrome-btn lg:hidden" aria-label="打开菜单">
                 <Menu />
             </button>
 
@@ -104,7 +104,7 @@ const TabBar = ({ onMenu }: { onMenu: () => void }) => {
                             {!pinned && (
                                 <button
                                     type="button"
-                                    aria-label={`Close ${tabLabel(path)}`}
+                                    aria-label={`关闭 ${tabLabel(path)}`}
                                     className="tab-close relative z-10"
                                     onClick={() => closeTab(path)}
                                 >
@@ -116,7 +116,7 @@ const TabBar = ({ onMenu }: { onMenu: () => void }) => {
                 })}
             </div>
 
-            <button type="button" onClick={openSearch} className="chrome-btn -ml-2" aria-label="Open a stock" title="Open a stock (⌘K)">
+            <button type="button" onClick={openSearch} className="chrome-btn -ml-2" aria-label="打开一只股票" title="打开股票（⌘K）">
                 <Plus />
             </button>
         </div>

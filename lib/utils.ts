@@ -13,11 +13,11 @@ export const formatTimeAgo = (timestamp: number) => {
 
     if (diffInHours > 24) {
         const days = Math.floor(diffInHours / 24);
-        return `${days} day${days > 1 ? 's' : ''} ago`;
+        return `${days} 天前`;
     } else if (diffInHours >= 1) {
-        return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+        return `${diffInHours} 小时前`;
     } else {
-        return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+        return `${diffInMinutes} 分钟前`;
     }
 };
 
@@ -89,7 +89,7 @@ export const formatArticle = (
     headline: article.headline!.trim(),
     summary:
         article.summary!.trim().substring(0, isCompanyNews ? 200 : 150) + '...',
-    source: article.source || (isCompanyNews ? 'Company News' : 'Market News'),
+    source: article.source || (isCompanyNews ? '公司新闻' : '市场新闻'),
     url: article.url!,
     datetime: article.datetime!,
     image: article.image || '',
@@ -136,7 +136,7 @@ export function formatNumber(num?: number | null): string {
     return value.toString();
 }
 
-export const formatDateToday = new Date().toLocaleDateString('en-US', {
+export const formatDateToday = new Date().toLocaleDateString('zh-CN', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -147,10 +147,10 @@ export const formatDateToday = new Date().toLocaleDateString('en-US', {
 
 export const getAlertText = (alert: Alert) => {
     const condition = alert.alertType === 'upper' ? '>' : '<';
-    return `Price ${condition} ${formatPrice(alert.threshold)}`;
+    return `价格 ${condition} ${formatPrice(alert.threshold)}`;
 };
 
-export const getFormattedTodayDate = () => new Date().toLocaleDateString('en-US', {
+export const getFormattedTodayDate = () => new Date().toLocaleDateString('zh-CN', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',

@@ -61,21 +61,21 @@ export default function DonatePopup() {
                         <Heart className="size-5 fill-current" />
                     </span>
                     <div>
-                        <p className="kicker flex items-center gap-2 text-brand-ink"><span className="live-dot" /> Open for sponsors</p>
-                        <DialogTitle className="mt-1.5 text-2xl font-bold tracking-[-0.03em]">Keep OpenStock free</DialogTitle>
+                        <p className="kicker flex items-center gap-2 text-brand-ink"><span className="live-dot" /> 招募赞助中</p>
+                        <DialogTitle className="mt-1.5 text-2xl font-bold tracking-[-0.03em]">让 OpenStock 保持免费</DialogTitle>
                     </div>
                     <DialogDescription className="text-[15px] leading-relaxed text-muted-foreground">
-                        Your love for OpenStock and Open Dev Society has helped us grow, and we&apos;re now hitting
-                        Vercel&apos;s free tier limits. Sponsor from $5 a month, give once, or talk with us about a partnership.
+                        你对 OpenStock 与 Open Dev Society 的喜爱帮助我们不断成长，如今我们已触及
+                        Vercel 免费套餐的上限。每月赞助 5 美元起、单次捐赠，或与我们洽谈合作。
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="flex flex-col gap-2 sm:flex-row">
                     <Link href="/sponsor" onClick={handleDismiss} className="btn btn-primary h-11 flex-1">
-                        <Heart className="fill-current" /> Become a sponsor
+                        <Heart className="fill-current" /> 成为赞助者
                     </Link>
                     <button type="button" onClick={handleDismiss} className="btn btn-ghost h-11 flex-1">
-                        Maybe later
+                        以后再说
                     </button>
                 </div>
             </DialogContent>

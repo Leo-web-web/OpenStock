@@ -20,7 +20,7 @@ async function Sentiment({ symbol }: { symbol: string }) {
     const insight = await getStockSentimentInsights(symbol);
     if (!insight) return null;
     return (
-        <Panel title="Sentiment" sub="Reddit, X.com, news and Polymarket">
+        <Panel title="市场情绪" sub="Reddit、X.com、新闻与 Polymarket">
             <StockSentimentCard insight={insight} />
         </Panel>
     );
@@ -29,7 +29,7 @@ async function Sentiment({ symbol }: { symbol: string }) {
 async function DividendYield({ symbol }: { symbol: string }) {
     const dividendYield = await getStockMetrics(symbol);
     return (
-        <Panel title="Dividend Yield">
+        <Panel title="股息率">
             <p className="text-2xl font-semibold text-white">
                 {dividendYield !== null ? `${dividendYield.toFixed(2)}%` : "—"}
             </p>
@@ -55,20 +55,20 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
                         <StockChart tvSymbol={tvSymbol} scriptUrl={`${scriptUrl}advanced-chart.js`} />
                     ) : (
                         // TradingView refuses this exchange's chart in embeds; say so instead of showing its error
-                        <Panel title="Chart" sub="Only on TradingView for this exchange">
+                        <Panel title="图表" sub="该交易所的图表仅见于 TradingView">
                             <div className="empty-state py-14">
                                 <span className="empty-icon"><CandlestickChart className="size-5" /></span>
-                                <h3>Chart not available here</h3>
+                                <h3>此处暂无图表</h3>
                                 <p className="max-w-80 text-[13px]">
-                                    TradingView doesn’t license {tvSymbol.split(':')[0]} charts for other sites. Financials, technicals and the profile below still work.
+                                    TradingView 未授权其他网站展示 {tvSymbol.split(':')[0]} 的图表，下方的财务数据、技术面与公司资料仍可查看。
                                 </p>
                                 <a href={tradingViewSymbolUrl(tvSymbol)} target="_blank" rel="noopener noreferrer" className="btn btn-ghost mt-2">
-                                    Open chart on TradingView
+                                    在 TradingView 上查看图表
                                 </a>
                             </div>
                         </Panel>
                     )}
-                    <Panel title="Financials" sub="Income statement, balance sheet and ratios">
+                    <Panel title="财务数据" sub="利润表、资产负债表与财务比率">
                         <TradingViewWidget
                             scriptUrl={`${scriptUrl}financials.js`}
                             config={COMPANY_FINANCIALS_WIDGET_CONFIG(tvSymbol)}
@@ -78,7 +78,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
                 </div>
 
                 <div className="flex min-w-0 flex-col gap-3">
-                    <Panel title="Technicals" sub="Oscillators and moving averages, 1h">
+                    <Panel title="技术面" sub="震荡指标与均线，1小时">
                         <TradingViewWidget
                             scriptUrl={`${scriptUrl}technical-analysis.js`}
                             config={TECHNICAL_ANALYSIS_WIDGET_CONFIG(tvSymbol)}
@@ -91,7 +91,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
                     <Suspense fallback={null}>
                         <Sentiment symbol={symbol} />
                     </Suspense>
-                    <Panel title="Profile" sub="What the company does">
+                    <Panel title="公司资料" sub="公司主营业务">
                         <TradingViewWidget
                             scriptUrl={`${scriptUrl}symbol-profile.js`}
                             config={COMPANY_PROFILE_WIDGET_CONFIG(tvSymbol)}

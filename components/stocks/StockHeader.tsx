@@ -28,7 +28,7 @@ async function TradingViewHeader({ symbol }: { symbol: string }) {
                 <div className="min-w-0">
                     <h1 className="mono truncate text-xl font-bold tracking-[-0.02em]">{symbol}</h1>
                     <p className="text-[12.5px] text-faint">
-                        {[tvSymbol.split(':')[0], saudi?.name, tadawul ? 'delayed quote via Yahoo Finance' : 'quote via TradingView'].filter(Boolean).join(' · ')}
+                        {[tvSymbol.split(':')[0], saudi?.name, tadawul ? '延迟行情（Yahoo Finance）' : '行情（TradingView）'].filter(Boolean).join(' · ')}
                     </p>
                 </div>
                 {saudi && (
@@ -39,8 +39,8 @@ async function TradingViewHeader({ symbol }: { symbol: string }) {
                 )}
                 <div className="flex items-center gap-2">
                     <WatchlistButton symbol={symbol} company={symbol} isInWatchlist={isInWatchlist} />
-                    <span className="pill h-9 px-3" title="Price alerts need a quote source we can check every 5 minutes">
-                        <Bell /> Alerts: US stocks and crypto
+                    <span className="pill h-9 px-3" title="价格提醒需要一个可每 5 分钟核查的行情来源">
+                        <Bell /> 提醒：仅支持美股与加密货币
                     </span>
                 </div>
             </div>
@@ -68,10 +68,10 @@ export default async function StockHeader({ symbol }: { symbol: string }) {
     const money = (value?: number) => (value ? formatPrice(value, currency) : '—');
 
     const stats = [
-        { label: 'Open', icon: CalendarClock, value: money(quote?.o), hint: 'First trade of the session' },
-        { label: 'Day range', icon: MoveVertical, value: quote?.l && quote?.h ? `${money(quote.l)} – ${money(quote.h)}` : '—', hint: 'Low to high' },
-        { label: 'Prev close', icon: Gauge, value: money(quote?.pc), hint: 'Last session' },
-        { label: 'Market cap', icon: Landmark, value: profile?.marketCapitalization ? formatNumber(profile.marketCapitalization) : '—', hint: currency },
+        { label: '开盘', icon: CalendarClock, value: money(quote?.o), hint: '本交易日首笔成交' },
+        { label: '日内区间', icon: MoveVertical, value: quote?.l && quote?.h ? `${money(quote.l)} – ${money(quote.h)}` : '—', hint: '最低至最高' },
+        { label: '昨收', icon: Gauge, value: money(quote?.pc), hint: '上一交易日' },
+        { label: '市值', icon: Landmark, value: profile?.marketCapitalization ? formatNumber(profile.marketCapitalization) : '—', hint: currency },
     ];
 
     return (
@@ -96,7 +96,7 @@ export default async function StockHeader({ symbol }: { symbol: string }) {
                 <div className="flex items-center gap-2">
                     <WatchlistButton symbol={symbol} company={company} isInWatchlist={isInWatchlist} />
                     <CreateAlertModal symbol={symbol} currentPrice={quote?.c} currency={currency}>
-                        <button type="button" className="btn btn-primary"><Bell /> Set alert</button>
+                        <button type="button" className="btn btn-primary"><Bell />设置提醒</button>
                     </CreateAlertModal>
                 </div>
             </div>

@@ -24,9 +24,9 @@ type Params = { ticker: string };
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
     const { ticker: raw } = await params;
     const ticker = findTicker(raw);
-    if (!ticker) return { title: 'Stock not found | OpenStock', robots: { index: false, follow: false } };
+    if (!ticker) return { title: '未找到股票 | OpenStock', robots: { index: false, follow: false } };
 
-    const title = `${ticker.name} (${ticker.symbol}) stock chart and SEC filings | OpenStock`;
+    const title = `${ticker.name} (${ticker.symbol}) 股票图表与 SEC 备案文件 | OpenStock`;
     const description = tickerIntro(ticker);
     const url = `${siteUrl()}${tickerPath(ticker.symbol)}`;
     return {
@@ -46,10 +46,10 @@ function FilingRow({ label, filing }: { label: string; filing: EdgarFiling | nul
             <dd className="text-[15px]">
                 {filing ? (
                     <a href={filing.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground underline decoration-[var(--line)] underline-offset-4 hover:decoration-foreground">
-                        {filing.form} filed {formatFilingDate(filing.filed)}
+                        {filing.form} 提交于 {formatFilingDate(filing.filed)}
                     </a>
                 ) : (
-                    <span className="text-muted-foreground">Not in the recent EDGAR index</span>
+                    <span className="text-muted-foreground">不在最近的 EDGAR 索引中</span>
                 )}
             </dd>
         </div>
@@ -74,17 +74,17 @@ export default async function PublicTickerPage({ params }: { params: Promise<Par
     const signedIn = !!session?.user;
     const peers = relatedTickers(ticker);
     const { prev, next } = adjacentTickers(ticker);
-    const title = `${ticker.name} (${ticker.symbol}) stock chart and SEC filings`;
+    const title = `${ticker.name} (${ticker.symbol}) 股票图表与 SEC 备案文件`;
     const filingsUrl = edgar?.filingsUrl ?? (ticker.cik ? companyBrowseUrl(ticker.cik) : 'https://www.sec.gov/edgar/search/');
 
     return (
         <article className="mx-auto max-w-[1200px] px-5 pt-10 pb-4">
             <JsonLd data={structuredData({ ticker, origin, url, title, description: tickerIntro(ticker) })} />
 
-            <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2 text-[13px] font-semibold text-muted-foreground">
+            <nav aria-label="面包屑导航" className="flex flex-wrap items-center gap-x-2 text-[13px] font-semibold text-muted-foreground">
                 <Link href="/" className="hover:text-foreground">OpenStock</Link>
                 <span aria-hidden>/</span>
-                <Link href="/s" className="hover:text-foreground">US stocks</Link>
+                <Link href="/s" className="hover:text-foreground">美股</Link>
                 <span aria-hidden>/</span>
                 <Link href={`/s#${sectorAnchor(ticker.sector)}`} className="hover:text-foreground">{ticker.sector}</Link>
                 <span aria-hidden>/</span>
@@ -99,9 +99,9 @@ export default async function PublicTickerPage({ params }: { params: Promise<Par
 
             <div className="mt-8 flex flex-wrap gap-2">
                 <Link href={signedIn ? `/stocks/${encodeURIComponent(ticker.symbol)}` : '/sign-up'} className="btn btn-primary h-11 px-5 text-[15px]">
-                    {signedIn ? `Open ${ticker.symbol} in the app` : `Track ${ticker.symbol} free`}
+                    {signedIn ? `在应用中打开 ${ticker.symbol}` : `免费追踪 ${ticker.symbol}`}
                 </Link>
-                <a href={tvHref} target="_blank" rel="noopener nofollow" className="btn btn-ghost h-11 px-5 text-[15px]">View on TradingView</a>
+                <a href={tvHref} target="_blank" rel="noopener nofollow" className="btn btn-ghost h-11 px-5 text-[15px]">在 TradingView 上查看</a>
             </div>
 
             <div className="mt-8 flex flex-col gap-3">
@@ -112,7 +112,7 @@ export default async function PublicTickerPage({ params }: { params: Promise<Par
                             config={symbolInfoConfig(tvSymbol)}
                             height={180}
                             creditHref={tvHref}
-                            creditLabel={`${ticker.symbol} quote by TradingView`}
+                            creditLabel={`${ticker.symbol} 行情由 TradingView 提供`}
                         />
                     </div>
                 </section>
@@ -123,17 +123,17 @@ export default async function PublicTickerPage({ params }: { params: Promise<Par
                             config={CANDLE_CHART_WIDGET_CONFIG(tvSymbol)}
                             height={560}
                             creditHref={tvHref}
-                            creditLabel={`${ticker.symbol} chart by TradingView`}
+                            creditLabel={`${ticker.symbol} 图表由 TradingView 提供`}
                         />
                     </div>
                 </section>
             </div>
 
             <section className="mt-10">
-                <h2 className="text-[28px] font-bold tracking-[-0.04em]">SEC filings</h2>
+                <h2 className="text-[28px] font-bold tracking-[-0.04em]">SEC 备案文件</h2>
                 <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-                    Industry code, fiscal year and filing dates come from the SEC’s EDGAR submissions feed for CIK {ticker.cik}.
-                    The annual report is a Form 10-K, or a 20-F or 40-F for a foreign issuer. The quarterly report is a Form 10-Q when the company files one.
+                    行业代码、财年与备案日期来自 SEC 的 EDGAR 申报数据，CIK 为 {ticker.cik}.
+                    年报是 10-K 表格，外国发行人则是 20-F 或 40-F 表格。季报是 10-Q 表格（若该公司有提交）。
                 </p>
                 <div className="hatch mt-5">
                     <div className="card p-6">
@@ -141,32 +141,32 @@ export default async function PublicTickerPage({ params }: { params: Promise<Par
                             <dl className="grid gap-6 sm:grid-cols-2">
                                 <div>
                                     <dt className="kicker">SIC</dt>
-                                    <dd className="mt-1 text-[15px]">{[edgar.sic, edgar.sicDescription].filter(Boolean).join(' · ') || 'Not listed'}</dd>
+                                    <dd className="mt-1 text-[15px]">{[edgar.sic, edgar.sicDescription].filter(Boolean).join(' · ') || '未列出'}</dd>
                                 </div>
                                 <div>
-                                    <dt className="kicker">Fiscal year ends</dt>
-                                    <dd className="mt-1 text-[15px]">{edgar.fiscalYearEnd || 'Not listed'}</dd>
+                                    <dt className="kicker">财年结束</dt>
+                                    <dd className="mt-1 text-[15px]">{edgar.fiscalYearEnd || '未列出'}</dd>
                                 </div>
                                 <div>
-                                    <dt className="kicker">Incorporated</dt>
-                                    <dd className="mt-1 text-[15px]">{edgar.stateOfIncorporation || 'Not listed'}</dd>
+                                    <dt className="kicker">注册地</dt>
+                                    <dd className="mt-1 text-[15px]">{edgar.stateOfIncorporation || '未列出'}</dd>
                                 </div>
-                                <FilingRow label="Latest annual report" filing={edgar.annual} />
-                                <FilingRow label="Latest quarterly report" filing={edgar.quarterly} />
+                                <FilingRow label="最新年报" filing={edgar.annual} />
+                                <FilingRow label="最新季报" filing={edgar.quarterly} />
                                 <div>
-                                    <dt className="kicker">All filings</dt>
+                                    <dt className="kicker">全部备案文件</dt>
                                     <dd className="mt-1 text-[15px]">
                                         <a href={edgar.filingsUrl} target="_blank" rel="noopener noreferrer" className="font-semibold underline decoration-[var(--line)] underline-offset-4 hover:decoration-foreground">
-                                            {ticker.name} on EDGAR
+                                            {ticker.name} 在 EDGAR 上
                                         </a>
                                     </dd>
                                 </div>
                             </dl>
                         ) : (
                             <p className="text-[15px] leading-relaxed text-muted-foreground">
-                                EDGAR did not respond for this company just now. The chart above is unaffected.{' '}
+                                EDGAR 刚刚没有返回这家公司的数据。上方图表不受影响。{' '}
                                 <a href={filingsUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground underline decoration-[var(--line)] underline-offset-4">
-                                    Open {ticker.symbol} on EDGAR
+                                    在 EDGAR 上打开 {ticker.symbol}
                                 </a>
                                 .
                             </p>
@@ -176,7 +176,7 @@ export default async function PublicTickerPage({ params }: { params: Promise<Par
             </section>
 
             <section className="mt-12">
-                <h2 className="text-[22px] font-bold tracking-[-0.03em]">More in {ticker.sector}</h2>
+                <h2 className="text-[22px] font-bold tracking-[-0.03em]">同属 {ticker.sector} 的更多公司</h2>
                 <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
                     {peers.map((peer) => (
                         <li key={peer.symbol}>
@@ -188,39 +188,39 @@ export default async function PublicTickerPage({ params }: { params: Promise<Par
                     ))}
                 </ul>
                 <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-[13px] font-semibold text-muted-foreground">
-                    {prev && <Link href={tickerPath(prev.symbol)} className="hover:text-foreground">Previous: {prev.symbol}</Link>}
-                    {next && <Link href={tickerPath(next.symbol)} className="hover:text-foreground">Next: {next.symbol}</Link>}
-                    <Link href="/s" className="hover:text-foreground">All US stocks</Link>
+                    {prev && <Link href={tickerPath(prev.symbol)} className="hover:text-foreground">上一只：{prev.symbol}</Link>}
+                    {next && <Link href={tickerPath(next.symbol)} className="hover:text-foreground">下一只：{next.symbol}</Link>}
+                    <Link href="/s" className="hover:text-foreground">全部美股</Link>
                 </p>
             </section>
 
             <section className="mt-12">
-                <h2 className="text-[22px] font-bold tracking-[-0.03em]">Questions about tracking {ticker.symbol}</h2>
+                <h2 className="text-[22px] font-bold tracking-[-0.03em]">关于追踪 {ticker.symbol} 的问题</h2>
                 <div className="hatch mt-4">
                     <div className="card row-list overflow-hidden">
                         <details className="group">
                             <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold [&::-webkit-details-marker]:hidden">
-                                Does this page show a live price?
+                                本页显示实时价格吗？
                                 <ChevronDown className="size-4 flex-none text-faint transition-transform group-open:rotate-180" />
                             </summary>
                             <p className="max-w-3xl px-5 pb-5 text-[15px] leading-relaxed text-muted-foreground">
-                                The number you see in the chart is rendered by TradingView’s widget in your browser. OpenStock does not print a quote of its own on this page. A free account adds {ticker.symbol} to a watchlist; email alerts, when that deployment has them, run inside the app.
+                                图表中的数字由你浏览器中的 TradingView 挂件渲染。OpenStock 不在本页自行发布报价。免费账号可将 {ticker.symbol} 加入自选；邮件提醒（若该部署支持）在应用内运行。
                             </p>
                         </details>
                         <details className="group">
                             <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold [&::-webkit-details-marker]:hidden">
-                                Where do the filing dates come from?
+                                备案日期来自哪里？
                                 <ChevronDown className="size-4 flex-none text-faint transition-transform group-open:rotate-180" />
                             </summary>
                             <p className="max-w-3xl px-5 pb-5 text-[15px] leading-relaxed text-muted-foreground">
-                                From the SEC’s EDGAR submissions feed for CIK {ticker.cik || 'this company'}. The link opens the filing on sec.gov. OpenStock is not affiliated with the SEC.
+                                来自 SEC 的 EDGAR 申报数据，CIK 为 {ticker.cik || '这家公司'}。链接会在 sec.gov 上打开备案文件。OpenStock 与 SEC 没有关联。
                             </p>
                         </details>
                     </div>
                 </div>
             </section>
 
-            <nav aria-label="Related guides" className="mt-10 flex flex-wrap gap-x-4 gap-y-2 text-[13px] font-semibold text-muted-foreground">
+            <nav aria-label="相关指南" className="mt-10 flex flex-wrap gap-x-4 gap-y-2 text-[13px] font-semibold text-muted-foreground">
                 {GUIDES.slice(0, 4).map((guide) => (
                     <Link key={guide.slug} href={`/compare/${guide.slug}`} className="hover:text-foreground">{guide.title}</Link>
                 ))}
@@ -228,10 +228,10 @@ export default async function PublicTickerPage({ params }: { params: Promise<Par
 
             <div className="mt-10">
                 <SignUpCta
-                    title={`Track ${ticker.symbol} free on OpenStock`}
-                    body="Save it to a watchlist, keep the chart open in a tab, and read the filings from one place. OpenStock is not a broker, and nothing here is investment advice."
+                    title={`在 OpenStock 上免费追踪 ${ticker.symbol}`}
+                    body="把它存入自选，在标签页中保持图表打开，并在一个地方阅读备案文件。OpenStock 不是券商，这里没有任何内容构成投资建议。"
                     href={signedIn ? `/stocks/${encodeURIComponent(ticker.symbol)}` : '/sign-up'}
-                    label={signedIn ? `Open ${ticker.symbol}` : `Track ${ticker.symbol} free`}
+                    label={signedIn ? `打开 ${ticker.symbol}` : `免费追踪 ${ticker.symbol}`}
                 />
             </div>
         </article>
@@ -246,7 +246,7 @@ function structuredData({ ticker, origin, url, title, description }: { ticker: U
                 '@type': 'BreadcrumbList',
                 itemListElement: [
                     { '@type': 'ListItem', position: 1, name: 'OpenStock', item: `${origin}/` },
-                    { '@type': 'ListItem', position: 2, name: 'US stocks', item: `${origin}/s` },
+                    { '@type': 'ListItem', position: 2, name: '美股', item: `${origin}/s` },
                     { '@type': 'ListItem', position: 3, name: ticker.sector, item: `${origin}/s#${sectorAnchor(ticker.sector)}` },
                     { '@type': 'ListItem', position: 4, name: `${ticker.name} (${ticker.symbol})`, item: url },
                 ],

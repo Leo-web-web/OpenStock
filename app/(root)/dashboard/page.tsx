@@ -26,19 +26,19 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
     const market = getMarket(requested ?? saved ?? marketForCountry((await getSession())?.user.country));
     const open = isMarketOpen(market);
     const native = market.pulse.some((p) => p.finnhub);
-    const pulseSub = native ? 'Our shared quotes via Finnhub' : market.yahoo ? 'Delayed quotes via Yahoo Finance' : `${market.feed} quotes via TradingView`;
+    const pulseSub = native ? '通过 Finnhub 获取的共享行情' : market.yahoo ? '通过 Yahoo Finance 获取的延迟行情' : `通过 TradingView 获取的 ${market.feed} 行情`;
     const heatmap = market.heatmap === 'stocks'
-        ? { script: 'stock-heatmap.js', config: STOCK_HEATMAP_CONFIG, title: 'S&P 500 heatmap' }
+        ? { script: 'stock-heatmap.js', config: STOCK_HEATMAP_CONFIG, title: '标普 500 热力图' }
         : market.heatmap === 'crypto'
-            ? { script: 'crypto-coins-heatmap.js', config: CRYPTO_HEATMAP_CONFIG, title: 'Crypto heatmap' }
+            ? { script: 'crypto-coins-heatmap.js', config: CRYPTO_HEATMAP_CONFIG, title: '加密货币热力图' }
             : null;
 
     return (
         <>
             <header className="page-head">
                 <div>
-                    <h1 className="page-title">Markets</h1>
-                    <p className="page-sub">{market.name} · {open ? 'open now' : 'closed now'} · {market.feed.toLowerCase()} data</p>
+                    <h1 className="page-title">市场</h1>
+                    <p className="page-sub">{market.name} · {open ? '开盘中' : '已收盘'} · {market.feed.toLowerCase()} 数据</p>
                 </div>
             </header>
 
@@ -47,7 +47,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
             <section className="hatch">
                 <div className="section-head">
                     <div>
-                        <h2 className="section-title">Pulse</h2>
+                        <h2 className="section-title">市场脉动</h2>
                         <p className="section-sub">{pulseSub}</p>
                     </div>
                     {native && <DataFreshness />}
@@ -61,20 +61,20 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
             <div key={market.id} className="flex flex-col gap-3">
                 <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
                     {market.yahoo ? (
-                        <Panel title="Movers" sub="Biggest moves today">
+                        <Panel title="异动股" sub="今日涨跌幅最大的股票">
                             <SaudiMovers market={market} />
                         </Panel>
                     ) : (
-                        <Panel title="Leaders" sub="12-month trend by group">
+                        <Panel title="领涨股" sub="按板块划分的 12 个月走势">
                             <TradingViewWidget scriptUrl={`${scriptUrl}market-overview.js`} config={marketOverviewConfig(market.groups)} height={560} />
                         </Panel>
                     )}
                     {heatmap ? (
-                        <Panel title={heatmap.title} sub="Sized by market cap, coloured by today’s move">
+                        <Panel title={heatmap.title} sub="按市值缩放，按今日涨跌着色">
                             <TradingViewWidget scriptUrl={`${scriptUrl}${heatmap.script}`} config={heatmap.config} height={560} allowExpand />
                         </Panel>
                     ) : (
-                        <Panel title="Quotes" sub={`${market.name} leaders by group`}>
+                        <Panel title="行情" sub={`${market.name} 各板块龙头`}>
                             {market.yahoo
                                 ? <SaudiQuotesTable market={market} />
                                 : <TradingViewWidget scriptUrl={`${scriptUrl}market-quotes.js`} config={marketQuotesConfig(market.groups)} height={560} />}
@@ -84,11 +84,11 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
 
                 <div className="grid gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
                     {heatmap && (
-                        <Panel title="Quotes" sub={`${market.name} leaders by group`}>
+                        <Panel title="行情" sub={`${market.name} 各板块龙头`}>
                             <TradingViewWidget scriptUrl={`${scriptUrl}market-quotes.js`} config={marketQuotesConfig(market.groups)} height={560} />
                         </Panel>
                     )}
-                    <Panel title="Top stories" sub="Newest first" className={heatmap ? '' : 'xl:col-span-2'}>
+                    <Panel title="热门新闻" sub="最新优先" className={heatmap ? '' : 'xl:col-span-2'}>
                         <TradingViewWidget scriptUrl={`${scriptUrl}timeline.js`} config={timelineConfig(market.news)} height={560} />
                     </Panel>
                 </div>

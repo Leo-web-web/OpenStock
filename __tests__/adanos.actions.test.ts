@@ -36,7 +36,7 @@ describe('normalizeSourceInsight', () => {
         expect(reddit).toMatchObject({
             label: 'Reddit',
             companyName: null,
-            metricLabel: 'Mentions',
+            metricLabel: '提及次数',
             metricValue: 647,
             buzzScore: 81.2,
             bullishPct: 46,
@@ -44,7 +44,7 @@ describe('normalizeSourceInsight', () => {
         expect(polymarket).toMatchObject({
             label: 'Polymarket',
             companyName: null,
-            metricLabel: 'Trades',
+            metricLabel: '交易次数',
             metricValue: 3731,
             buzzScore: 55.7,
             bullishPct: 72,
@@ -72,11 +72,11 @@ describe('normalizeSourceInsight', () => {
 
 describe('getSourceAlignment', () => {
     it('classifies wide divergence when sources materially disagree', () => {
-        expect(getSourceAlignment([31, 56, 48, 30])).toBe('Wide divergence');
+        expect(getSourceAlignment([31, 56, 48, 30])).toBe('分歧较大');
     });
 
     it('classifies bullish alignment when sources are tightly aligned and positive', () => {
-        expect(getSourceAlignment([61, 64, 67])).toBe('Bullish alignment');
+        expect(getSourceAlignment([61, 64, 67])).toBe('看涨一致');
     });
 });
 
@@ -90,7 +90,7 @@ describe('buildStockSentimentInsights', () => {
                 buzzScore: 74.1,
                 bullishPct: 31,
                 trend: 'rising',
-                metricLabel: 'Mentions',
+                metricLabel: '提及次数',
                 metricValue: 647,
             },
             {
@@ -100,7 +100,7 @@ describe('buildStockSentimentInsights', () => {
                 buzzScore: 86.1,
                 bullishPct: 56,
                 trend: 'falling',
-                metricLabel: 'Mentions',
+                metricLabel: '提及次数',
                 metricValue: 2650,
             },
             {
@@ -110,7 +110,7 @@ describe('buildStockSentimentInsights', () => {
                 buzzScore: 83.3,
                 bullishPct: 30,
                 trend: 'falling',
-                metricLabel: 'Trades',
+                metricLabel: '交易次数',
                 metricValue: 3731,
             },
             null,
@@ -121,7 +121,7 @@ describe('buildStockSentimentInsights', () => {
             companyName: 'Tesla, Inc.',
             averageBuzz: 81.2,
             bullishAverage: 39,
-            sourceAlignment: 'Wide divergence',
+            sourceAlignment: '分歧较大',
             availableSources: 3,
         });
         expect(insight?.sources).toHaveLength(3);

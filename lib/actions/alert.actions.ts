@@ -21,20 +21,20 @@ export async function createAlert(params: {
     condition: 'ABOVE' | 'BELOW';
 }) {
     const userId = await requireUserId();
-    if (!alertsEnabled) throw new Error('Price alerts are part of OpenStock Cloud');
+    if (!alertsEnabled) throw new Error('价格提醒是 OpenStock Cloud 的功能');
     const symbol = String(params.symbol ?? '').trim().toUpperCase();
     const targetPrice = Number(params.targetPrice);
     const condition = params.condition;
 
-    if (!SYMBOL_PATTERN.test(symbol)) throw new Error('Invalid symbol');
-    if (!CONDITIONS.includes(condition)) throw new Error('Invalid condition');
+    if (!SYMBOL_PATTERN.test(symbol)) throw new Error('股票代码无效');
+    if (!CONDITIONS.includes(condition)) throw new Error('提醒条件无效');
     // The alert checker prices symbols through Finnhub, whose free plan covers US stocks and crypto
-    if (!hasFinnhubQuotes(symbol)) throw new Error('Alerts are available for US stocks and crypto');
-    if (!Number.isFinite(targetPrice) || targetPrice <= 0) throw new Error('Target price must be a positive number');
+    if (!hasFinnhubQuotes(symbol)) throw new Error('提醒仅支持美股和加密货币');
+    if (!Number.isFinite(targetPrice) || targetPrice <= 0) throw new Error('目标价必须是正数');
 
     await connectToDatabase();
     if (await Alert.countDocuments({ userId, active: true }) >= MAX_ACTIVE_ALERTS) {
-        throw new Error(`You can have up to ${MAX_ACTIVE_ALERTS} active alerts`);
+        throw new Error(`你最多可以设置 ${MAX_ACTIVE_ALERTS} 条有效提醒`);
     }
 
     try {
@@ -44,7 +44,7 @@ export async function createAlert(params: {
         return JSON.parse(JSON.stringify(newAlert));
     } catch (error) {
         console.error('Error creating alert:', error);
-        throw new Error('Failed to create alert');
+        throw new Error('创建提醒失败');
     }
 }
 
@@ -71,6 +71,6 @@ export async function deleteAlert(alertId: string) {
         return { success: true };
     } catch (error) {
         console.error('Error deleting alert:', error);
-        throw new Error('Failed to delete alert');
+        throw new Error('删除提醒失败');
     }
 }

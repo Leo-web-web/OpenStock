@@ -54,10 +54,10 @@ export const sendWelcomeEmail = async ({ email, name, intro }: WelcomeEmailData)
             .replace('{{intro}}', () => sanitizeEmailIntro(intro));
 
         const mailOptions = {
-            from: `"Openstock" <${process.env.NODEMAILER_EMAIL}>`,
+            from: `"OpenStock" <${process.env.NODEMAILER_EMAIL}>`,
             to: email,
-            subject: `Welcome to Openstock - your open-source stock market toolkit!`,
-            text: 'Thanks for joining Openstock, an initiative by open dev society',
+            subject: `欢迎加入 OpenStock——你的开源股票市场工具箱！`,
+            text: '感谢加入 OpenStock，Open Dev Society 发起的开源项目',
             html: htmlTemplate,
         };
 
@@ -84,10 +84,10 @@ export const sendNewsSummaryEmail = async (
             .replace('{{newsContent}}', newsContent);
 
         const mailOptions = {
-            from: `"Openstock" <${process.env.NODEMAILER_EMAIL}>`,
+            from: `"OpenStock" <${process.env.NODEMAILER_EMAIL}>`,
             to: email,
-            subject: `📈 Market News Summary Today - ${date}`,
-            text: `Today's market news summary from Openstock`,
+            subject: `📈 今日市场新闻摘要 - ${date}`,
+            text: `今日市场新闻摘要，来自 OpenStock`,
             html: htmlTemplate,
         };
 
@@ -123,10 +123,10 @@ export const sendStockAlertEmail = async (
             .replaceAll('{{timestamp}}', new Date().toUTCString());
 
         const mailOptions = {
-            from: `"Openstock" <${process.env.NODEMAILER_EMAIL}>`,
+            from: `"OpenStock" <${process.env.NODEMAILER_EMAIL}>`,
             to: email,
-            subject: `🔔 Price Alert: ${symbol} is ${isUpper ? 'above' : 'below'} ${money(targetPrice)}`,
-            text: `${symbol} is now ${money(currentPrice)}, ${isUpper ? 'above' : 'below'} your target of ${money(targetPrice)}.`,
+            subject: `🔔 价格提醒：${symbol} 已${isUpper ? '高于' : '低于'} ${money(targetPrice)}`,
+            text: `${symbol} 现价 ${money(currentPrice)}，已${isUpper ? '高于' : '低于'}你的目标价 ${money(targetPrice)}。`,
             html: htmlTemplate,
         };
 

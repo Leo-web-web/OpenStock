@@ -16,7 +16,7 @@ type Params = { slug: string };
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
     const { slug } = await params;
     const guide = findGuide(slug);
-    if (!guide) return { title: 'Guide not found | OpenStock', robots: { index: false, follow: false } };
+    if (!guide) return { title: '指南未找到 | OpenStock', robots: { index: false, follow: false } };
 
     const title = `${guide.title} | OpenStock`;
     const url = `${siteUrl()}/compare/${guide.slug}`;
@@ -48,7 +48,7 @@ export default async function GuidePage({ params }: { params: Promise<Params> })
                         '@type': 'BreadcrumbList',
                         itemListElement: [
                             { '@type': 'ListItem', position: 1, name: 'OpenStock', item: `${origin}/` },
-                            { '@type': 'ListItem', position: 2, name: 'Guides', item: `${origin}/compare` },
+                            { '@type': 'ListItem', position: 2, name: '指南', item: `${origin}/compare` },
                             { '@type': 'ListItem', position: 3, name: guide.title, item: url },
                         ],
                     },
@@ -72,8 +72,8 @@ export default async function GuidePage({ params }: { params: Promise<Params> })
             }} />
 
             <PageHero kicker={guide.kicker} title={guide.title} sub={guide.lede}>
-                <Link href="/sign-up" className="btn btn-primary h-11 px-5 text-[15px]">Get started free</Link>
-                <Link href="/s" className="btn btn-ghost h-11 px-5 text-[15px]">Browse US stocks</Link>
+                <Link href="/sign-up" className="btn btn-primary h-11 px-5 text-[15px]">免费开始使用</Link>
+                <Link href="/s" className="btn btn-ghost h-11 px-5 text-[15px]">浏览美股</Link>
             </PageHero>
 
             <div className="mx-auto mt-14 flex max-w-[800px] flex-col gap-12 px-5">
@@ -90,7 +90,7 @@ export default async function GuidePage({ params }: { params: Promise<Params> })
             </div>
 
             <section className="mx-auto mt-16 max-w-[800px] px-5">
-                <h2 className="text-[28px] font-bold tracking-[-0.04em]">Questions</h2>
+                <h2 className="text-[28px] font-bold tracking-[-0.04em]">常见问题</h2>
                 <div className="hatch mt-4">
                     <div className="card row-list overflow-hidden">
                         {guide.faqs.map((faq) => (
@@ -108,7 +108,7 @@ export default async function GuidePage({ params }: { params: Promise<Params> })
 
             {examples.length > 0 && (
                 <section className="mx-auto mt-16 max-w-[800px] px-5">
-                    <h2 className="text-[22px] font-bold tracking-[-0.03em]">Look up a company</h2>
+                    <h2 className="text-[22px] font-bold tracking-[-0.03em]">查询一家公司</h2>
                     <ul className="mt-4 flex flex-wrap gap-2">
                         {examples.map((ticker) => (
                             <li key={ticker.symbol}>
@@ -122,7 +122,7 @@ export default async function GuidePage({ params }: { params: Promise<Params> })
             )}
 
             <section className="mx-auto mt-12 max-w-[800px] px-5">
-                <h2 className="text-[13px] font-semibold text-faint">Other guides</h2>
+                <h2 className="text-[13px] font-semibold text-faint">其他指南</h2>
                 <ul className="mt-3 flex flex-col gap-2">
                     {others.map((other) => (
                         <li key={other.slug}>
@@ -134,10 +134,10 @@ export default async function GuidePage({ params }: { params: Promise<Params> })
 
             <section className="mx-auto mt-12 max-w-[800px] px-5">
                 <SignUpCta
-                    title="Use OpenStock free"
-                    body="Charts, a watchlist and the US filing pages are free. OpenStock is not a broker and this is not investment advice."
+                    title="免费使用 OpenStock"
+                    body="图表、自选与美股备案页面全部免费。OpenStock 不是券商，这里也不是投资建议。"
                     href="/sign-up"
-                    label="Create a free account"
+                    label="创建免费账号"
                 />
             </section>
         </>

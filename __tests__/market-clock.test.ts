@@ -14,16 +14,16 @@ describe('NYSE session', () => {
     });
 
     it('counts down to the right open', () => {
-        expect(sessionOf(2, at(9)).line).toBe('Pre-market · opens in 30m');
-        expect(sessionOf(2, at(14)).line).toBe('Market open · closes in 2h 00m');
+        expect(sessionOf(2, at(9)).line).toBe('盘前 · 30分钟后开盘');
+        expect(sessionOf(2, at(14)).line).toBe('开盘 · 2小时00分钟后收盘');
         // Friday night and Saturday wait for Monday 9:30
-        expect(sessionOf(5, at(21)).line).toBe('Market closed · opens in 2d 12h');
-        expect(sessionOf(6, at(12)).line).toBe('Market closed · opens in 1d 21h');
+        expect(sessionOf(5, at(21)).line).toBe('已收盘 · 2天12小时后开盘');
+        expect(sessionOf(6, at(12)).line).toBe('已收盘 · 1天21小时后开盘');
     });
 
     it('formats spans', () => {
-        expect(formatSpan(45)).toBe('45m');
-        expect(formatSpan(125)).toBe('2h 05m');
+        expect(formatSpan(45)).toBe('45分钟');
+        expect(formatSpan(125)).toBe('2小时05分钟');
     });
 });
 
