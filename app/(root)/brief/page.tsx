@@ -2,6 +2,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import Panel from "@/components/Panel";
+import { splitBrief } from "@/lib/brief-split";
 
 const BRIEF_URL =
     "https://raw.githubusercontent.com/Leo-web-web/daily_stock_analysis/main/reports/latest.md";
@@ -23,6 +24,17 @@ function formatZh(dateStr: string): string {
     return `${year}年${Number(month)}月${Number(day)}日`;
 }
 
+// 站内排版的 Markdown 渲染：.brief-prose（见 globals.css 末尾）
+function BriefMarkdown({ children }: { children: string }) {
+    return (
+        <div className="overflow-x-auto">
+            <article className="brief-prose">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown>
+            </article>
+        </div>
+    );
+}
+
 export default async function BriefPage() {
     let markdown: string | null = null;
 
@@ -39,6 +51,7 @@ export default async function BriefPage() {
     const isToday = reportDate === todayInShanghai();
     // 渲染时去掉第一行标记（标题已在页头显示，避免重复）
     const body = markdown?.replace(/^# 每日简报 · \d{4}-\d{2}-\d{2}\s*/m, "") ?? "";
+    const split = splitBrief(body);
 
     return (
         <>
@@ -77,16 +90,31 @@ export default async function BriefPage() {
                             未能识别这份简报的日期，请以邮件简报为准。
                         </div>
                     )}
-                    <Panel
-                        title="每日简报"
-                        sub={reportDate ? `${formatZh(reportDate)} · 仅供参考，不构成投资建议` : "仅供参考，不构成投资建议"}
-                    >
-                        <div className="overflow-x-auto">
-                            <article className="prose prose-neutral dark:prose-invert max-w-none">
-                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
-                            </article>
+                    {split.stocks.length === 0 ? (
+                        <Panel
+                            title="每日简报"
+                            sub={reportDate ? `${formatZh(reportDate)} · 仅供参考，不构成投资建议` : "仅供参考，不构成投资建议"}
+                            bodyClassName="p-5"
+                        >
+                            <BriefMarkdown>{body}</BriefMarkdown>
+                        </Panel>
+                    ) : (
+                        <div className="flex max-w-[920px] flex-col gap-3">
+                            {split.preamble && (
+                                <Panel title={split.dashboardTitle} bodyClassName="p-5">
+                                    <BriefMarkdown>{split.preamble}</BriefMarkdown>
+                                </Panel>
+                            )}
+                            {split.stocks.map((stock) => (
+                                <Panel key={stock.title} title={stock.title} bodyClassName="p-5">
+                                    <BriefMarkdown>{stock.body}</BriefMarkdown>
+                                </Panel>
+                            ))}
+                            {split.footer.length > 0 && (
+                                <p className="px-1 text-[12px] leading-relaxed text-faint">{split.footer.join(" · ")}</p>
+                            )}
                         </div>
-                    </Panel>
+                    )}
                 </>
             )}
         </>
